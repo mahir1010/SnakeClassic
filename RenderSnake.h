@@ -125,10 +125,10 @@ int init_snake(RenderingLines **head, RenderingLines **last, int x1, int y1, int
  * @param yincr contains new value for y2_increment
  * @return updated head value
  *
- * xincr  yincr  Direction
+ * xincr 	yincr  		Direction
  *  -1		0		Left
  *   1 		0		Right
- *   0	   -1		Up
+ *   0	       -1		Up
  *   0		1		Down
  */
 RenderingLines *insert_new_line(RenderingLines *head, int x1, int y1, int xincr, int yincr);
