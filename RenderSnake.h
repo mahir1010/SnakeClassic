@@ -136,11 +136,11 @@ RenderingLines *insert_new_line(RenderingLines *head, int x1, int y1, int xincr,
 /**
  * @brief This function is used to remove last line when length of the line is zero.
  * This function calculates dx(x2-x1) and dy(y2-y1) to calculate new x1-increment and y1-increment value.
- * 	|dx|	|dy|	x1-increment 	y1-increment
+ * 	|dx|		|dy|		x1-increment 			y1-increment
  * 	 =0		 >0			0				1
- * 	 =0		 <0			0			   -1
+ * 	 =0		 <0			0			       -1
  * 	 >0		 =0			1				0
- * 	 <0		 =0		   -1				0
+ * 	 <0		 =0		       -1				0
  * @param last Contains pointer to the last line of the snake's body which is to be removed
  */
 void remove_last_line(RenderingLines **last);
