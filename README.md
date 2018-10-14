@@ -6,4 +6,4 @@
 <li>Run the Program
 </ol>
 
-Classic snakes game made with SDL2.
+
