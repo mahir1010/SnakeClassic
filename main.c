@@ -1,72 +1,54 @@
-#include "SDL2/SDL.h"
-#include "./libs/Snake.h"
 #include <math.h>
 #include <stdio.h>
-#include "export.h"
-
+#include "SDL2/SDL.h"
+#include "./includes/Snake.h"
+#include "./includes/export.h"
+#ifdef AIMODE
+#include "SnakeAI.h"
+#endif
+RenderingLines *head = NULL, *last = NULL;
+int lastKey = 0;
+Food *f = NULL;
+#ifdef AIMODE
+Command currentCommand = NOOP;
+#endif
 int main(int argc, char *argv[])
 {
 	SDL_Rect food;
-	Food *f = NULL;
-	RenderingLines *head = NULL, *last = NULL;
-	int lastKey = SDLK_DOWN;
 	SDL_Window *window = NULL;
 	SDL_Event event;
 	SDL_Renderer *renderer = NULL;
 	int condition = 1;
-	
-	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-	{
-		printf( "SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
+	if (INIT_SNAKE_Y1 - INIT_SNAKE_Y2 > 0) {
+		lastKey = SDLK_DOWN;
+	} else if (INIT_SNAKE_Y1 - INIT_SNAKE_Y2 < 0) {
+		lastKey = SDLK_UP;
+	} else if (INIT_SNAKE_X1 - INIT_SNAKE_X2 > 0) {
+		lastKey = SDLK_RIGHT;
+	} else if (INIT_SNAKE_X1 - INIT_SNAKE_X2 < 0) {
+		lastKey = SDLK_LEFT;
+	}
+
+#ifdef AIMODE
+	float length=calculate_distance(INIT_SNAKE_X1,INIT_SNAKE_Y1,INIT_SNAKE_X2,INIT_SNAKE_Y2);
+	init();
+#endif
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		printf("SDL could not initialize! SDL_Error: %s\n",
+		       SDL_GetError());
 		return -1;
 	}
-	if (SDL_CreateWindowAndRenderer(800, 600, SDL_WINDOW_SHOWN, &window, &renderer) < 0) {
-		printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
+	if (SDL_CreateWindowAndRenderer(RES_COL, RES_ROW, SDL_WINDOW_SHOWN,
+					&window, &renderer)
+	    < 0) {
+		printf("Window could not be created! SDL_Error: %s\n",
+		       SDL_GetError());
 		return -1;
 	}
 
-	init_snake(&head, &last, INIT_SNAKE_X1,INIT_SNAKE_Y1, INIT_SNAKE_X2, INIT_SANKE_Y2);
+	init_snake(&head, &last, INIT_SNAKE_X1, INIT_SNAKE_Y1, INIT_SNAKE_X2,
+		   INIT_SNAKE_Y2);
 	while (condition) {
-		if (SDL_PollEvent(&event) > 0) {
-			switch (event.type) {
-			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
-				case SDLK_LEFT:
-					if (lastKey == SDLK_RIGHT) {
-						break;
-					}
-					head = insert_new_line(head, head->attr->x1, head->attr->y1, -1, 0);
-					break;
-				case SDLK_RIGHT:
-					if (lastKey == SDLK_LEFT) {
-						break;
-					}
-					head = insert_new_line(head, head->attr->x1, head->attr->y1, 1, 0);
-					break;
-				case SDLK_UP:
-					if (lastKey == SDLK_DOWN) {
-						break;
-					}
-					head = insert_new_line(head, head->attr->x1, head->attr->y1, 0, -1);
-					break;
-				case SDLK_DOWN:
-					if (lastKey == SDLK_UP) {
-						break;
-					}
-					head = insert_new_line(head, head->attr->x1, head->attr->y1, 0, 1);
-					break;
-				case SDLK_ESCAPE:
-					condition = 0;
-					break;
-				}
-				lastKey = event.key.keysym.sym;
-				break;
-			}
-		}
-		update_lines(&head, &last);
-		set_color_for_clear(&renderer);
-		SDL_RenderClear(renderer);
-		set_color_to_draw(&renderer);
 		if (f == NULL) {
 			if (create_food(&f) == -1) {
 				break;
@@ -76,13 +58,119 @@ int main(int argc, char *argv[])
 			food.w = 4;
 			food.h = 4;
 		}
+#ifndef AIMODE
+		if (SDL_PollEvent(&event) > 0) {
+			switch (event.type) {
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym) {
+				case SDLK_LEFT:
+					if (lastKey == SDLK_LEFT || lastKey == SDLK_RIGHT) {
+						break;
+					}
+					head = insert_new_line(
+						head, head->attr->x1,
+						head->attr->y1, -1, 0);
+					break;
+				case SDLK_RIGHT:
+					if (lastKey == SDLK_LEFT || lastKey == SDLK_RIGHT) {
+						break;
+					}
+					head = insert_new_line(
+						head, head->attr->x1,
+						head->attr->y1, 1, 0);
+					break;
+				case SDLK_UP:
+					if (lastKey == SDLK_DOWN || lastKey == SDLK_UP) {
+						break;
+					}
+					head = insert_new_line(
+						head, head->attr->x1,
+						head->attr->y1, 0, -1);
+					break;
+				case SDLK_DOWN:
+					if (lastKey == SDLK_UP) {
+						break;
+					}
+					head = insert_new_line(
+						head, head->attr->x1,
+						head->attr->y1, 0, 1);
+					break;
+				case SDLK_ESCAPE:
+					condition = 0;
+					break;
+				}
+				lastKey = event.key.keysym.sym;
+				break;
+			}
+		}
+#else
+		if (SDL_PollEvent(&event) > 0) {
+				if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE)
+				condition = 0;
+		}
+		currentCommand = next_command();
+		if(currentCommand==NOOP){
+			printf("NOOP found\n");
+		}
+		switch (currentCommand) {
+		case RIGHT:
+			if (lastKey == SDLK_LEFT || lastKey == SDLK_RIGHT) {
+				break;
+			}
+			head = insert_new_line(head, head->attr->x1,
+					       head->attr->y1, 1, 0);
+			lastKey=SDLK_RIGHT;
+			break;
+		case LEFT:
+			if (lastKey == SDLK_RIGHT || lastKey==SDLK_LEFT) {
+				break;
+			}
+			head = insert_new_line(head, head->attr->x1,
+					       head->attr->y1, -1, 0);
+			lastKey=SDLK_LEFT;
+			break;
+		case UP:
+			if (lastKey == SDLK_DOWN || lastKey == SDLK_UP) {
+				break;
+			}
+			head = insert_new_line(head, head->attr->x1,
+					       head->attr->y1, 0, -1);
+			lastKey=SDLK_UP;
+			break;
+		case DOWN:
+			if (lastKey == SDLK_UP || lastKey == SDLK_DOWN ) {
+				break;
+			}
+			head = insert_new_line(head, head->attr->x1,
+					       head->attr->y1, 0, 1);
+			lastKey=SDLK_DOWN;
+			break;
+		}
+#endif
+		update_lines(&head, &last);
+#ifdef AIMODE
+		#ifdef PROB_HEURISTIC
+		update_map(length);
+		#else
+		update_map();
+		#endif
+#endif
+		set_color_for_clear(&renderer);
+		SDL_RenderClear(renderer);
+		set_color_to_draw(&renderer);
 		if (f != NULL) {
 			SDL_RenderFillRect(renderer, &food);
-			if (check_food_collision(head->attr->x1, head->attr->y1, food)) {
+			if (check_food_collision(head->attr->x1, head->attr->y1,
+						 food)) {
 				free(f);
 				f = NULL;
-				head->attr->x1 += (head->attr->x1_increment <<3);
-				head->attr->y1 += (head->attr->y1_increment <<3);
+				#ifdef AIMODE
+				length++;
+				#endif
+				head->attr->x1 +=
+					(head->attr->x1_increment << 1);
+				head->attr->y1 +=
+					(head->attr->y1_increment << 1);
 			}
 		}
 		render_snake(&renderer, head);
@@ -90,12 +178,23 @@ int main(int argc, char *argv[])
 		if (detect_collision(head) == -1) {
 			break;
 		}
-		SDL_Delay(5);
+		#ifndef AIMODE
+		SDL_Delay(3);
+		#else
+		//SDL_Delay(1);
+		#endif
 	}
-	printf("SCORE=%lf\n",calculate_score(head));
+	food.x=head->attr->x1;
+	food.y=head->attr->y1;
+	SDL_SetRenderDrawColor(renderer,255,0,0,1);
+	SDL_RenderFillRect(renderer, &food);
+	SDL_Surface *sshot = SDL_CreateRGBSurface(0, RES_COL, RES_ROW, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
+	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
+	SDL_SaveBMP(sshot, "screenshot.bmp");
+	SDL_FreeSurface(sshot);
+	printf("SCORE=%lf\n\n", calculate_score(head));
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-
 	SDL_Quit();
 	return 0;
 }

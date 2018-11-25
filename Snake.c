@@ -1,4 +1,4 @@
-#include "./libs/Snake.h"
+#include "./includes/Snake.h"
 
 void init_attributes(Attributes **attr, int x1, int y1, int x2, int y2, int x1_incr, int y1_incr, int x2_incr, int y2_incr) {
 	(*attr)->x1 = x1;
@@ -21,20 +21,24 @@ int update_attributes(RenderingLines **head,Attributes **attr, int condition) {
 	(*attr)->x2 += (*attr)->x2_increment;
 	(*attr)->y2 += (*attr)->y2_increment;
 	if(!condition){
-		if((*attr)->x1>RES_X){
+		if((*attr)->x1>=RES_COL){
+			(*attr)->x1=RES_COL-1;
 			*head=insert_new_line(*head,0,((*attr)->y1),1,0);
 			return 1;
 		}
 		if((*attr)->x1<0){
-			*head=insert_new_line(*head,RES_X,((*attr)->y1),-1,0);
+			(*attr)->x1=0;
+			*head=insert_new_line(*head,RES_COL-1,((*attr)->y1),-1,0);
 			return 1;
 		}
-		if((*attr)->y1>RES_Y){
+		if((*attr)->y1>=RES_ROW){
+			(*attr)->y1=RES_ROW-1;
 			*head=insert_new_line(*head,(*attr)->x1,0,0,1);
 			return 1;
 		}
 		if((*attr)->y1<0){
-			*head=insert_new_line(*head,(*attr)->x1,RES_Y,0,-1);
+			(*attr)->y1=0;
+			*head=insert_new_line(*head,(*attr)->x1,RES_ROW-1,0,-1);
 			return 1;
 		}
 	}
@@ -134,14 +138,14 @@ void update_lines(RenderingLines **head, RenderingLines **last) {
 
 }
 
-double calculate_distance(int x1, int y1, int x2, int y2) {
+float calculate_distance(int x1, int y1, int x2, int y2) {
 
 	return sqrt(pow(x2 - x1, 2) + (pow(y2 - y1, 2)));
 }
 
 int detect_collision(RenderingLines *head) {
-	int x = head->attr->x1 + head->attr->x1_increment;
-	int y = head->attr->y1 + head->attr->y1_increment;
+	int x = head->attr->x1;
+	int y = head->attr->y1;
 	RenderingLines *temp = head->next;
 	while (temp != NULL) {
 		if (calculate_distance(temp->attr->x1, temp->attr->y1, x, y) + calculate_distance(temp->attr->x2, temp->attr->y2, x, y) == calculate_distance(temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2)) {
@@ -162,6 +166,10 @@ void set_color_to_draw(SDL_Renderer **renderer) {
 
 void render_snake(SDL_Renderer **renderer, RenderingLines *head) {
 	RenderingLines *temp = head;
+	SDL_SetRenderDrawColor(*renderer,255,0,0,1);
+	SDL_RenderDrawLine(*renderer, temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2);
+	temp=temp->next;
+	set_color_to_draw(renderer);
 	while (temp != NULL) {
 		SDL_RenderDrawLine(*renderer, temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2);
 		temp = temp->next;
@@ -177,8 +185,8 @@ int create_food(Food **f) {
 	if (*f == NULL) {
 		return -1;
 	}
-	(*f)->x1 = rand() % RES_X-4;
-	(*f)->y1 = rand() % RES_Y-4;
+	(*f)->x1 = (rand() % (RES_COL-4))+1;
+	(*f)->y1 = (rand() % (RES_ROW-4))+1;
 	return 1;
 }
 
@@ -190,5 +198,5 @@ double calculate_score(RenderingLines *head){
 		length += calculate_distance(temp->attr->x1,temp->attr->y1,temp->attr->x2,temp->attr->y2);
 		temp=temp->next;
 	}	
-	return length-calculate_distance(INIT_SNAKE_X1,INIT_SNAKE_Y1,INIT_SNAKE_X2,INIT_SANKE_Y2);
+	return length-calculate_distance(INIT_SNAKE_X1,INIT_SNAKE_Y1,INIT_SNAKE_X2,INIT_SNAKE_Y2);
 }

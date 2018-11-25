@@ -16,7 +16,7 @@
 #include <math.h>
 #include <time.h>
 #include "Structures.h"
-#include "../config.h"
+#include "./config.h"
 
 
 /**
@@ -99,7 +99,7 @@ void update_lines(RenderingLines **head, RenderingLines **last);
  * @param y2 y co-ordinate of second point
  * @return Distance between two points
  */
-double calculate_distance(int x1, int y1, int x2, int y2);
+float calculate_distance(int x1, int y1, int x2, int y2);
 
 /**
  * @brief This function calculates whether the end point of the head line is intersecting with other lines of the body
