@@ -6,4 +6,8 @@
 <li>Run the Program
 </ol>
 
+Compilation scenarios:
+<br>To play ./compile.sh
+<br>To compile greedy algorithm ./compile.sh 1
+<br>To compile probabilistic heurisitc algorithm ./compile.sh 0
 
