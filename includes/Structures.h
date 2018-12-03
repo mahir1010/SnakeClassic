@@ -1,5 +1,13 @@
 #ifndef STRUCTURES_H
 #define STRUCTURES_H
+
+#define LEFT 0x0
+#define UP 0x01
+#define RIGHT 0x02
+#define DOWN 0x03
+#define NOOP 0x04
+typedef char Command;
+
 /**
 * @brief The basic structure to store
 * x and y co-ordinates of the end points
@@ -50,4 +58,16 @@ typedef struct foodAttr {
 	int y1;
 } Food;
 
+#ifdef AIMODE
+#ifdef PROB_HEURISTIC
+/**
+ * @brief chain of commands supplied by the AI.
+ * 
+ */
+typedef struct commands{
+	Command command;
+	struct commands *next;
+}Command_List;
+#endif
+#endif
 #endif

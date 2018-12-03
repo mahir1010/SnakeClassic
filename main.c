@@ -32,6 +32,9 @@ int main(int argc, char *argv[])
 #ifdef AIMODE
 	float length=calculate_distance(INIT_SNAKE_X1,INIT_SNAKE_Y1,INIT_SNAKE_X2,INIT_SNAKE_Y2);
 	init();
+	#ifdef PROB_HEURISTIC
+	Command_List *command_head=NULL;
+	#endif
 #endif
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		printf("SDL could not initialize! SDL_Error: %s\n",
@@ -108,10 +111,15 @@ int main(int argc, char *argv[])
 				if(event.type==SDL_KEYDOWN && event.key.keysym.sym==SDLK_ESCAPE)
 				condition = 0;
 		}
+		#ifndef PROB_HEURISTIC
 		currentCommand = next_command();
-		if(currentCommand==NOOP){
-			printf("NOOP found\n");
+		#else
+		if(command_head==NULL){
+			next_command(&command_head);
 		}
+		currentCommand=pop_command(&command_head);
+		#endif
+
 		switch (currentCommand) {
 		case RIGHT:
 			if (lastKey == SDLK_LEFT || lastKey == SDLK_RIGHT) {
@@ -181,7 +189,7 @@ int main(int argc, char *argv[])
 		#ifndef AIMODE
 		SDL_Delay(3);
 		#else
-		//SDL_Delay(1);
+		//SDL_Delay(3);
 		#endif
 	}
 	food.x=head->attr->x1;
@@ -192,7 +200,7 @@ int main(int argc, char *argv[])
 	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
 	SDL_SaveBMP(sshot, "screenshot.bmp");
 	SDL_FreeSurface(sshot);
-	printf("SCORE=%lf\n\n", calculate_score(head));
+	printf("%d %d SCORE=%lf\n\n",head->attr->x1,head->attr->y1,calculate_score(head));
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();

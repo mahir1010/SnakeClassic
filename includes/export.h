@@ -3,17 +3,14 @@
 #include "Structures.h"
 #include "config.h"
 
+#define GET_X(x,distance)(x+distance>RES_COL-1?x+distance-RES_COL:(x+distance<0?RES_COL+x+distance:x+distance))
+#define GET_Y(x,distance)(x+distance>RES_ROW-1?x+distance-RES_ROW:(x+distance<0?RES_ROW+x+distance:x+distance))
 
-#define LEFT 0x0
-#define RIGHT 0x1
-#define UP 0x2
-#define DOWN 0x3
-#define NOOP 0x4
+
 
 extern RenderingLines *head , *last ;
 extern Food *f;
 extern int lastKey;
-typedef char Command;
-
 extern Command currentCommand;
+
 #endif
