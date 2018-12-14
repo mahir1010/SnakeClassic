@@ -189,7 +189,7 @@ int main(int argc, char *argv[])
 		#ifndef AIMODE
 		SDL_Delay(3);
 		#else
-		//SDL_Delay(3);
+		//SDL_Delay(1);
 		#endif
 	}
 	food.x=head->attr->x1;
