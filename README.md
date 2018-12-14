@@ -8,6 +8,7 @@
 
 Compilation scenarios:
 <br>To play ./compile.sh
-<br>To compile greedy algorithm ./compile.sh 1
-<br>To compile probabilistic heurisitc algorithm ./compile.sh 0
+<br>To compile with greedy algorithm ./compile.sh 1
+<br>To compile with probabilistic heurisitc algorithm ./compile.sh 0
 
+![Self](https://raw.githubusercontent.com/mahir1010/SnakeClassic/screenshot/SnakeClassic.gif)
