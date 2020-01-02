@@ -7,6 +7,7 @@
    * CUDA_PATH: Path to the root of CUDA installation
    * search_depth: Creates kernel with width of (search_depth*2+1)
         * Example: &nbsp; search_depth=3
+        
            | -3 | -3 | -3 | -3 | -3 | -3 | -3 |
            |----|----|----|----|----|----|----|
            | -3 | -2 | -2 | -2 | -2 | -2 | -3 |
