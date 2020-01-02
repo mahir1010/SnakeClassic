@@ -7,13 +7,27 @@
     * search_depth: Creates kernel with width of (search_depth*2+1)
         * Example: &nbsp; search_depth=3
         <table>
-        <tr><td>-3<td>-3<td>-3<td>-3<td>-3<td>-3<td>-3</td></tr>
-        <tr><td>-3<td>-2<td>-2<td>-2<td>-2<td>-2<td>-3</td></tr>
-        <tr><td>-3<td>-2<td>-1<td>-1<td>-1<td>-2<td>-3</td></tr>
-        <tr><td>-3<td>-2<td>-1<td>0<td>-1<td>-2<td>-3</td></tr>
-        <tr><td>-3<td>-2<td>-1<td>-1<td>-1<td>-2<td>-3</td></tr>
-        <tr><td>-3<td>-2<td>-2<td>-2<td>-2<td>-2<td>-3</td></tr>
-        <tr><td>-3<td>-3<td>-3<td>-3<td>-3<td>-3<td>-3</td></tr>
+        <tr>
+           <td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td>
+        </tr>
+        <tr>
+           <td>-3</td><td>-2</td><td>-2</td><td>-2</td><td>-2</td><td>-2</td><td>-3</td>
+        </tr>
+        <tr>
+           <td>-3</td><td>-2</td><td>-1</td><td>-1</td><td>-1</td><td>-2</td><td>-3</td>
+        </tr>
+        <tr>
+           <td>-3</td><td>-2</td><td>-1</td><td>0</td><td>-1</td><td>-2</td><td>-3</td>
+        </tr>
+        <tr>
+           <td>-3</td><td>-2</td><td>-1</td><td>-1</td><td>-1</td><td>-2</td><td>-3</td>
+        </tr>
+        <tr>
+           <<td>-3</td><td>-2</td><td>-2</td><td>-2</td><td>-2</td><td>-2</td><td>-3</td>
+        </tr>
+        <tr>
+           <td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td><td>-3</td>
+        </tr>
         </table>
 3. Compile
 
