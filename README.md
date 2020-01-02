@@ -1,14 +1,29 @@
-<b>Snake Classic<br>Instructions:<br></b>
+# SnakeClassic
 
-<ol>
-<li>Install and configure <a href="https://wiki.libsdl.org/Installation">SDL2</a>
-<li>Compile the program using the script
-<li>Run the Program
-</ol>
+1. Install and configure <a href="https://wiki.libsdl.org/Installation" target="_blank">SDL2</a>&amp;<a href="https://developer.nvidia.com/cuda-downloads" target="_blank">CUDA</a>
+2. Define following variables in ``compile.sh``
+    * SnakeAIPath: Path to the root of [SnakeAI](https://github.com/mahir1010/SnakeAI)
+    * CUDA_PATH: Path to the root of CUDA installation
+    * search_depth: Creates kernel with width of (search_depth*2+1)
+        * Example: &nbsp; search_depth=3
+        <table>
+        <tr><td>-3<td>-3<td>-3<td>-3<td>-3<td>-3<td>-3</tr>
+        <tr><td>-3<td>-2<td>-2<td>-2<td>-2<td>-2<td>-3</tr>
+        <tr><td>-3<td>-2<td>-1<td>-1<td>-1<td>-2<td>-3</tr>
+        <tr><td>-3<td>-2<td>-1<td>0<td>-1<td>-2<td>-3</tr>
+        <tr><td>-3<td>-2<td>-1<td>-1<td>-1<td>-2<td>-3</tr>
+        <tr><td>-3<td>-2<td>-2<td>-2<td>-2<td>-2<td>-3</tr>
+        <tr><td>-3<td>-3<td>-3<td>-3<td>-3<td>-3<td>-3</tr>
+        </table>
+3. Compile
 
-Compilation scenarios:
-<br>To play ./compile.sh
-<br>To compile with greedy algorithm ./compile.sh 1
-<br>To compile with probabilistic heurisitc algorithm ./compile.sh 0
 
+Compilation Options:
+1. To play ```./compile.sh```
 ![Self](https://raw.githubusercontent.com/mahir1010/SnakeClassic/screenshot/SnakeClassic.gif)
+2. To select probabilistic heurisitc algorithm ```./compile.sh 0```
+![prob](https://raw.githubusercontent.com/mahir1010/SnakeAI/screenshot/Probabilistic%20Heuristic.gif)
+3. To select Greedy Algorithm ```./compile.sh 1```
+![greedy locally optimum](https://raw.githubusercontent.com/mahir1010/SnakeAI/screenshot/locally%20optimum.gif)
+
+
