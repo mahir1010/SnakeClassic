@@ -3,7 +3,7 @@
 1. Install and configure <a href="https://wiki.libsdl.org/Installation" target="_blank">SDL2</a>&amp;<a
     href="https://developer.nvidia.com/cuda-downloads" target="_blank">CUDA</a>
 2. Define following variables in ``compile.sh``
-   * SnakeAIPath: Path to the root of [SnakeAI](https://github.com/mahir1010/SnakeAI)
+   * SnakeAIPath: Path to the root of [SnakeAI](https://mahir1010.github.io/SnakeAI/)
    * CUDA_PATH: Path to the root of CUDA installation
    * search_depth: Creates kernel with width of (search_depth*2+1)
         
