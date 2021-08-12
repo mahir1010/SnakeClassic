@@ -6,6 +6,7 @@
 #define RIGHT 0x02
 #define DOWN 0x03
 #define NOOP 0x04
+#define STOP 0x05
 typedef char Command;
 
 /**
@@ -58,8 +59,7 @@ typedef struct foodAttr {
 	int y1;
 } Food;
 
-#ifdef AIMODE
-#ifdef PROB_HEURISTIC
+#if (defined(AIMODE) && defined(PROB_HEURISTIC))
 /**
  * @brief chain of commands supplied by the AI.
  * 
@@ -68,6 +68,5 @@ typedef struct commands{
 	Command command;
 	struct commands *next;
 }Command_List;
-#endif
 #endif
 #endif

@@ -13,7 +13,6 @@ void init_attributes(Attributes **attr, int x1, int y1, int x2, int y2, int x1_i
 
 int update_attributes(RenderingLines **head,Attributes **attr, int condition) {
 	if (condition && (*attr)->x1 == (*attr)->x2 && (*attr)->y1 == (*attr)->y2) {
-
 		return -1;
 	}
 	(*attr)->x1 += (*attr)->x1_increment;
@@ -21,24 +20,20 @@ int update_attributes(RenderingLines **head,Attributes **attr, int condition) {
 	(*attr)->x2 += (*attr)->x2_increment;
 	(*attr)->y2 += (*attr)->y2_increment;
 	if(!condition){
-		if((*attr)->x1>=RES_COL){
-			(*attr)->x1=RES_COL-1;
-			*head=insert_new_line(*head,0,((*attr)->y1),1,0);
+		if((*attr)->x1>RES_COL-1){
+			*head=insert_new_line_crossed(*head,0,((*attr)->y1),1,0);
 			return 1;
 		}
 		if((*attr)->x1<0){
-			(*attr)->x1=0;
-			*head=insert_new_line(*head,RES_COL-1,((*attr)->y1),-1,0);
+			*head=insert_new_line_crossed(*head,RES_COL-1,((*attr)->y1),-1,0);
 			return 1;
 		}
-		if((*attr)->y1>=RES_ROW){
-			(*attr)->y1=RES_ROW-1;
-			*head=insert_new_line(*head,(*attr)->x1,0,0,1);
+		if((*attr)->y1>RES_ROW-1){
+			*head=insert_new_line_crossed(*head,(*attr)->x1,0,0,1);
 			return 1;
 		}
 		if((*attr)->y1<0){
-			(*attr)->y1=0;
-			*head=insert_new_line(*head,(*attr)->x1,RES_ROW-1,0,-1);
+			*head=insert_new_line_crossed(*head,(*attr)->x1,RES_ROW-1,0,-1);
 			return 1;
 		}
 	}
@@ -93,7 +88,7 @@ RenderingLines *insert_new_line(RenderingLines *head,int x1,int y1, int xincr, i
 		free(newLine);
 		return NULL;
 	}
-	init_attributes(&newLine->attr,x1, y1, x1, y1, xincr, yincr, 0, 0);
+	init_attributes(&newLine->attr,x1, y1, x1+xincr, y1+yincr, xincr, yincr, 0, 0);
 	head->prev=newLine;
 	newLine->next=head;
 	head->attr->x1_increment = 0;
@@ -101,6 +96,24 @@ RenderingLines *insert_new_line(RenderingLines *head,int x1,int y1, int xincr, i
 	return newLine;
 }
 
+RenderingLines *insert_new_line_crossed(RenderingLines *head,int x1,int y1, int xincr, int yincr) {
+	RenderingLines *newLine = (RenderingLines*)malloc(sizeof(RenderingLines)); //Allocates memory to the new line that is to be inserted
+
+	if (newLine == NULL) {
+		return NULL;
+	}
+	newLine->attr = (Attributes*)malloc(sizeof(Attributes)); //Allocates memory to store Attributes of the new line
+	if (newLine->attr == NULL) {
+		free(newLine);
+		return NULL;
+	}
+	init_attributes(&newLine->attr,x1, y1, x1, y1, xincr, yincr, 0, 0);
+	head->prev=newLine;
+	newLine->next=head;
+	head->attr->x1_increment = 0;
+	head->attr->y1_increment = 0;
+	return newLine;
+}
 void remove_last_line(RenderingLines **last) {
 	int newXincr = 0, newYincr = 0, delx, dely;
 	RenderingLines *temp = *last;
@@ -121,8 +134,6 @@ void remove_last_line(RenderingLines **last) {
 	}
 	(*last)->attr->x2_increment = newXincr;
 	(*last)->attr->y2_increment = newYincr;
-	(*last)->attr->x2+=newXincr;
-	(*last)->attr->y2+=newYincr;
 	free(temp->attr);
 	free(temp);
 }

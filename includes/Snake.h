@@ -55,7 +55,7 @@ int update_attributes(RenderingLines **head,Attributes **attr, int condition);
 int init_snake(RenderingLines **head, RenderingLines **last, int x1, int y1, int x2, int y2);
 
 /**
- * @brief This fuctio Adds new line to the body of the snake
+ * @brief This fuction Adds new line to the body of the snake
  * This function is called when user presses a valid key and
  * snake is required to turn in respective direction.
  * @param head points to the first line of the body of snake
@@ -72,6 +72,9 @@ int init_snake(RenderingLines **head, RenderingLines **last, int x1, int y1, int
  *   0		1		Down
  */
 RenderingLines *insert_new_line(RenderingLines *head,int x1,int y1, int xincr, int yincr);
+
+
+RenderingLines *insert_new_line_crossed(RenderingLines *head,int x1,int y1, int xincr, int yincr);
 
 /**
  * @brief This function is used to remove last line when length of the line is zero.

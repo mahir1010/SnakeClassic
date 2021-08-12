@@ -14,9 +14,12 @@ if [  $# -gt 0 ]
     then
     gcc -c $SnakeAIPath/greedy_local_optimum.c -I ./includes/ -D AIMODE -O3
     gcc -c main.c -I $SnakeAIPath/ -I ./includes/ -D AIMODE -O3
+  elif [ $1 -eq 2 ]
+    then
+    gcc -c *.c -I ./includes/ -D NETWORK_MODE -O3
   fi
   else
     gcc -c main.c  -O3
 fi
-gcc *.o -o Snake -lSDL2 -lm -O3
+gcc *.o -o Snake -lSDL2 -lm -O3 -lSDL2_net
 rm *.o
