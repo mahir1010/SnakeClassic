@@ -7,6 +7,9 @@
 3. Compile
 
 Options:
+
+
+
 | option | Description |
 | ------- | ----------|
 | - | play the game |
