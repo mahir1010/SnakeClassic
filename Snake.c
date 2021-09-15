@@ -204,8 +204,9 @@ int create_food(Food **f) {
 
 double calculate_score(RenderingLines *head){
 	RenderingLines *temp=head;
-	double length=0;
+	double length=-1;
 	while(temp!=NULL){
+		length++;
 		length += calculate_distance(temp->attr->x1,temp->attr->y1,temp->attr->x2,temp->attr->y2);
 		temp=temp->next;
 	}	

@@ -33,8 +33,8 @@ Command next_command(TCPsocket client,Food *food,RenderingLines *head)
     while(cmd==0x05){
         SDLNet_TCP_Recv(client,&cmd,1);
     }
-    if (SDL_GetTicks()-start>10){
-        cmd=STOP;
+    if (SDL_GetTicks()-start>1000){
+        cmd=NOOP;
     }
     return cmd;
 }
