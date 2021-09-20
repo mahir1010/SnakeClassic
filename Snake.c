@@ -181,7 +181,13 @@ void render_snake(SDL_Renderer **renderer, RenderingLines *head) {
 	SDL_RenderDrawLine(*renderer, temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2);
 	temp=temp->next;
 	set_color_to_draw(renderer);
+    int i=0;
 	while (temp != NULL) {
+        i++;
+        if (calculate_distance(temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2)<10 && i%5==0){
+            temp=temp->next;
+            continue;
+        }
 		SDL_RenderDrawLine(*renderer, temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2);
 		temp = temp->next;
 	}

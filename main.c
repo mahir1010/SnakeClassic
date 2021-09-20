@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
 
 	init_snake(&head, &last, INIT_SNAKE_X1, INIT_SNAKE_Y1, INIT_SNAKE_X2,
 			   INIT_SNAKE_Y2);
+int k=0;
 	while (condition)
 	{
 		if (f == NULL)
@@ -198,8 +199,8 @@ int main(int argc, char *argv[])
 				head->attr->y1 += head->attr->y1_increment;
 			}
 		}
-		render_snake(&renderer, head);
-		SDL_RenderPresent(renderer);
+        render_snake(&renderer, head);
+        SDL_RenderPresent(renderer);
 		if (detect_collision(head) == -1)
 		{
 			break;
@@ -219,7 +220,7 @@ int main(int argc, char *argv[])
 	SDL_RenderReadPixels(renderer, NULL, SDL_PIXELFORMAT_ARGB8888, sshot->pixels, sshot->pitch);
 	SDL_SaveBMP(sshot, "screenshot.bmp");
 	SDL_FreeSurface(sshot);
-	printf("%d %d SCORE=%lf\n\n", head->attr->x1, head->attr->y1, calculate_score(head));
+	printf("%d %d SCORE=%d\n\n", head->attr->x1, head->attr->y1, score);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 #ifdef NETWORK_MODE
