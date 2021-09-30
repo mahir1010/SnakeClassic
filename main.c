@@ -87,6 +87,7 @@ int k=0;
 			if (detect_body_collision(f->x1,f->y1,head)==-1){
 				free(f);
 				f=NULL;
+				continue;
 			}
 			food.x = f->x1 - 2;
 			food.y = f->y1 - 2;
