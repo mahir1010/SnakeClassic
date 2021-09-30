@@ -77,11 +77,16 @@ int main(int argc, char *argv[])
 int k=0;
 	while (condition)
 	{
-		if (f == NULL)
+		while (f == NULL)
 		{
 			if (create_food(&f) == -1)
 			{
-				break;
+				printf("Memory allocation failed\n");
+				condition=-1;
+			}
+			if (detect_body_collision(f->x1,f->y1,head)==-1){
+				free(f);
+				f=NULL;
 			}
 			food.x = f->x1 - 2;
 			food.y = f->y1 - 2;

@@ -18,6 +18,7 @@
 #include "Structures.h"
 #include "./config.h"
 
+int detect_body_collision(int x, int y, RenderingLines * head);
 
 /**
  * @brief This function initializes input Attribute variable with given parameter values

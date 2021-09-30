@@ -11,8 +11,8 @@ Command next_command(TCPsocket client,Food *food,RenderingLines *head)
     }
     int size=sizeof(int)*2+length*sizeof(Attributes);
     int data[size/4];
-    data[0]=food->x1;
-    data[1]=food->y1;
+    data[0]=food->x1+2;
+    data[1]=food->y1+2;
     int i=2;
     temp=head;
     while(temp!=NULL){

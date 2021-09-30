@@ -166,7 +166,16 @@ int detect_collision(RenderingLines *head) {
 	}
 	return 0;
 }
-
+int detect_body_collision(int x, int y, RenderingLines * head){
+	RenderingLines *temp = head->next;
+	while (temp != NULL) {
+		if (calculate_distance(temp->attr->x1, temp->attr->y1, x, y) + calculate_distance(temp->attr->x2, temp->attr->y2, x, y) == calculate_distance(temp->attr->x1, temp->attr->y1, temp->attr->x2, temp->attr->y2)) {
+			return -1;
+		}
+		temp = temp->next;
+	}
+	return 0;
+}
 void set_color_for_clear(SDL_Renderer **renderer) {
 	SDL_SetRenderDrawColor(*renderer, 44, 62, 80 , 1);
 }
