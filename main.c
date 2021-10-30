@@ -200,7 +200,8 @@ int k=0;
 				f = NULL;
                 // Break game loop when score reaches the threshold
                 if (score>=100){
-                    condition=-1;
+                    condition=0;
+                    break;
                 }
 #ifdef AIMODE
 				length++;
